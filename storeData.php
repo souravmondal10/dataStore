@@ -1,0 +1,30 @@
+<?php
+require_once __DIR__ . '/config.php';
+$redis = new Redis();
+$redis->connect(REDIS_HOST, REDIS_PORT);
+$con = connectDatabase();
+if(!$con) {
+    die("Can not connect to database");
+}
+$allKeys = $redis->keys('*');
+$allUsersData = [];
+
+foreach($allKeys as $singleKeys) {
+    $singleUserData = json_decode($redis->get($singleKeys));
+    $userId = str_replace('user_object_', '', $singleKeys);
+    $sql = "INSERT INTO `users` (`userId`, `username`, `useremail`) VALUES ('$userId','$singleUserData->username', '$singleUserData->useremail')";
+    $result = mysqli_query($con, $sql);
+    $redis->del($singleKeys);
+}
+
+function connectDatabase()
+{
+    $con = mysqli_connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DATABASE, MYSQL_PORT);
+    // Check connection
+    if (mysqli_connect_errno()) {
+        echo "Failed to connect to MySQL: " . mysqli_connect_error();
+        return false;
+    }
+    return $con;
+}
+
