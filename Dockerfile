@@ -20,6 +20,8 @@ RUN pecl install -o -f redis \
 
 COPY ./storeData.php ./storeData.php
 COPY ./config.php ./config.php
+RUN apt install -y crontab
 
-RUN echo "* * * * * root php /var/www/html/storeData.php >> /var/log/cron.log 2>&1" >> /etc/crontab
+RUN echo "* * * * * php /var/www/html/storeData.php >> /var/log/cron.log" >> /etc/crontab
+RUN crontab /etc/crontab
 RUN touch /var/log/cron.log
