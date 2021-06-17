@@ -5,7 +5,7 @@ MAINTAINER Sourav Mondal "souravmondal10@gmail.com"
 
 WORKDIR /var/www/html
 
-RUN apt update && apt install -y \
+RUN apt-get update && apt-get install -y \
         libfreetype6-dev \
         libjpeg62-turbo-dev \
         libpng-dev \
