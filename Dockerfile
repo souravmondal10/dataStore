@@ -20,7 +20,7 @@ RUN pecl install -o -f redis \
 
 #cron job to process the requests
 RUN touch /var/log/cron.log
-RUN (crontab -l ; echo "* * * * * php /var/www/html/storeData.php >> /var/log/cron.log") | crontab
+#RUN (crontab -l ; echo "* * * * * php /var/www/html/storeData.php >> /var/log/cron.log") | crontab
 
 COPY ./storeData.php ./storeData.php
 COPY ./config.php ./config.php
