@@ -6,13 +6,13 @@ header('Content-type: application/json');
 $redis = new Redis();
 $redis->connect(REDIS_HOST, REDIS_PORT);
 $con = connectDatabase();
-if(!$con) {
+if (!$con) {
     die("Can not connect to database");
 }
 $allKeys = $redis->keys('*');
 $allUsersData = [];
 
-foreach($allKeys as $singleKeys) {
+foreach ($allKeys as $singleKeys) {
     $singleUserData = json_decode($redis->get($singleKeys));
     $userId = str_replace('user_object_', '', $singleKeys);
     echo $sql = "INSERT INTO `users` (`userId`, `username`, `useremail`) VALUES ('$userId','$singleUserData->username', '$singleUserData->useremail')";
@@ -30,4 +30,5 @@ function connectDatabase()
     }
     return $con;
 }
+echo 'cron processed at - '.date('dd-mm-yyyy H:i:s').PHP_EOL;
 
