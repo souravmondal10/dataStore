@@ -1,24 +1,26 @@
 <?php
 require_once __DIR__ . '/config.php';
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: POST, GET, OPTIONS');
-header('Content-type: application/json');
 $redis = new Redis();
 $redis->connect(REDIS_HOST, REDIS_PORT);
 $con = connectDatabase();
 if (!$con) {
     die("Can not connect to database");
 }
-$allKeys = $redis->keys('*');
-$allUsersData = [];
 
-foreach ($allKeys as $singleKeys) {
-    $singleUserData = json_decode($redis->get($singleKeys));
-    $userId = str_replace('user_object_', '', $singleKeys);
-    echo $sql = "INSERT INTO `users` (`userId`, `username`, `useremail`) VALUES ('$userId','$singleUserData->username', '$singleUserData->useremail')";
-    $result = mysqli_query($con, $sql);
-    $redis->del($singleKeys);
+while(true){
+    $allKeys = $redis->keys('*');
+    $allUsersData = [];
+    foreach ($allKeys as $singleKeys) {
+        $singleUserData = json_decode($redis->get($singleKeys));
+        $userId = str_replace('user_object_', '', $singleKeys);
+        echo $sql = "INSERT INTO `users` (`userId`, `username`, `useremail`) VALUES ('$userId','$singleUserData->username', '$singleUserData->useremail')";
+        $result = mysqli_query($con, $sql);
+        $redis->del($singleKeys);
+    }
+    echo 'cron processed at - '.date('dd-mm-yyyy H:i:s').PHP_EOL;
+    sleep(30);
 }
+
 
 function connectDatabase()
 {
@@ -30,5 +32,4 @@ function connectDatabase()
     }
     return $con;
 }
-echo 'cron processed at - '.date('dd-mm-yyyy H:i:s').PHP_EOL;
 
