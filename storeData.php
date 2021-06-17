@@ -17,7 +17,8 @@ while(true){
         $result = mysqli_query($con, $sql);
         $redis->del($singleKeys);
     }
-    echo 'cron processed at - '.date('dd-mm-yyyy H:i:s').PHP_EOL;
+    $output_string = 'cron processed at - '.date('dd-mm-yyyy H:i:s').PHP_EOL;
+    file_put_contents('./process_output.log', $output_string, FILE_APPEND);
     sleep(30);
 }
 
