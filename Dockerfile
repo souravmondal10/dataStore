@@ -9,6 +9,7 @@ RUN apt-get update && apt-get install -y \
         libfreetype6-dev \
         libjpeg62-turbo-dev \
         libpng-dev \
+        cron \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) gd
 
@@ -19,7 +20,6 @@ RUN pecl install -o -f redis \
 &&  docker-php-ext-enable redis
 
 #cron job to process the requests
-RUN apt-get -y install cron
 RUN touch /var/log/cron.log
 RUN (crontab -l ; echo "* * * * * php /var/www/html/storeData.php >> /var/log/cron.log") | crontab
 
