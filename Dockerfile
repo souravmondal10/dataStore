@@ -1,4 +1,4 @@
-FROM php:7.4-fpm
+FROM ubuntu
 
 MAINTAINER Sourav Mondal "souravmondal10@gmail.com"
 
