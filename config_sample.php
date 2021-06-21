@@ -1,5 +1,5 @@
 <?php
-
+//sample file
 define('REDIS_HOST', 'redis_host_xxx');
 define('REDIS_PORT', redis_port_xxx);
 define('MYSQL_HOST', 'mysql_host_xxx');
