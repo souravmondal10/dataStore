@@ -1,19 +1,25 @@
-FROM ubuntu
+FROM php
 
 MAINTAINER Sourav Mondal "souravmondal10@gmail.com"
 
 
 WORKDIR /var/www/html
 
-RUN apt-get update
-RUN apt -y install software-properties-common
-RUN add-apt-repository ppa:ondrej/php -y
-RUN apt-get update
-RUN apt -y install php7.4
-RUN apt-get install -y php7.4-mysql php7.4-redis
-RUN touch ./process_output.log
-COPY ./storeData.php ./storeData.php
-COPY ./config.php ./config.php
+RUN apt-get update && apt-get install -y \
+        libfreetype6-dev \
+        libjpeg62-turbo-dev \
+        libpng-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install -j$(nproc) gd
 
+RUN docker-php-ext-install mysqli pdo pdo_mysql && docker-php-ext-enable pdo_mysql
+
+RUN pecl install -o -f redis \
+&&  rm -rf /tmp/pear \
+&&  docker-php-ext-enable redis
+
+RUN touch ./process_output.log
+
+COPY . .
 
 CMD [ "php", "./storeData.php" ]
