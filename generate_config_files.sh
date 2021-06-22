@@ -9,3 +9,7 @@ sed -i "s/mysql_password_xxx/$MYSQL_PASSWORD/g" config.php
 sed -i "s/redis_port_xxx/$REDIS_PORT/g" config.php
 
 cat config.php
+
+docker build -t 'souravmondal10/datastore' .
+echo $DOCKER_PASSWORD | docker login --username $DOCKER_USERNAME --password-stdin
+docker push souravmondal10/datastore
