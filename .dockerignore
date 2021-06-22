@@ -3,3 +3,4 @@ Dockerfile
 .git
 config-sample.php
 generate_config_files.sh
+README.md
