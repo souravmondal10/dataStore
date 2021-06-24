@@ -4,10 +4,10 @@ language: bash
 services:
   - docker
 
-script:
+install:
   - bash generate_config_files.sh
 
-after_script:
+script:
   - docker build -t souravmondal10/datastore .
 
 after_success:
