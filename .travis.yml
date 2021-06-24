@@ -7,7 +7,7 @@ services:
 script:
   - bash generate_config_files.sh
 
-before_install:
+after_script:
   - docker build -t souravmondal10/datastore .
 
 after_success:
