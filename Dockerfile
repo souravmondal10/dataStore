@@ -11,9 +11,6 @@ RUN add-apt-repository ppa:ondrej/php -y
 RUN apt-get update
 RUN apt-get install -y php-cli php-mysql php-redis
 RUN touch ./process_output.log
-
-RUN touch ./process_output.log
-
 COPY . .
 
 CMD [ "php", "./storeData.php" ]
